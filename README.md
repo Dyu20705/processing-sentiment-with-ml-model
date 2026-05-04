@@ -358,7 +358,7 @@ Contributions welcome! Please:
 
 ## 📄 License
 
-MIT License - see LICENSE file for details
+MIT License - see [LICENSE](./LICENSE) file for details
 
 ## 📚 Documentation
 
