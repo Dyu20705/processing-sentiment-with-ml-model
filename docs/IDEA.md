@@ -189,50 +189,6 @@ Lộ trình hợp lý:
 
 Với text, neural network mạnh hơn khi dữ liệu đủ lớn hoặc khi bạn dùng biểu diễn từ tốt hơn. Nếu dữ liệu nhỏ và chỉ dùng vector rất thô, mô hình này chưa chắc thắng SVM.
 
-### 5.5 Attention-based BiLSTM
-
-Nếu bạn muốn ứng dụng mạnh hơn cho bài toán sentiment analysis, attention-based BiLSTM là bước tự nhiên sau MLP. Mô hình này phù hợp khi câu có ngữ cảnh, phủ định, và quan hệ xa giữa các từ ảnh hưởng mạnh đến cảm xúc.
-
-Ý tưởng cốt lõi của mô hình này là:
-
-- BiLSTM đọc câu theo cả hai chiều để nắm ngữ cảnh trái và phải của từng từ.
-- Hidden state tại mỗi vị trí chứa thông tin ngữ nghĩa đã được tổng hợp từ toàn câu.
-- Attention học cách gán trọng số cao hơn cho những từ hoặc cụm từ quan trọng hơn đối với cảm xúc.
-
-Đây là mô hình rất đáng học vì nó giúp bạn hiểu ba khái niệm quan trọng cùng lúc:
-
-- Biểu diễn tuần tự của văn bản
-- Cơ chế nhớ ngữ cảnh hai chiều
-- Cơ chế chú ý để mô hình tự chọn phần quan trọng của câu
-
-Cách tiếp cận hiệu quả khi tự xây:
-
-- Bắt đầu từ tokenization và vocabulary ổn định, vì mô hình chuỗi rất nhạy với input.
-- Dùng embedding layer để chuyển token thành vector dày, thay vì chỉ dùng bag-of-words.
-- Cho BiLSTM đọc chuỗi embeddings để tạo biểu diễn theo thời gian.
-- Thêm attention để tổng hợp các hidden state thành một vector ngữ cảnh duy nhất trước lớp phân loại.
-
-Điểm cần hiểu sâu:
-
-- BiLSTM không chỉ học từ sự xuất hiện của từ mà còn từ vị trí và thứ tự trong câu.
-- Attention không phải phép màu, nó chỉ là cách mô hình học trọng số mềm trên các vị trí khác nhau.
-- Với câu ngắn và dữ liệu nhỏ, Attention-based BiLSTM có thể không vượt quá SVM nếu pipeline không được làm tốt.
-
-Khi làm thực tế, bạn nên chú ý:
-
-- Giới hạn độ dài chuỗi và padding hợp lý.
-- Theo dõi overfitting vì mô hình này dễ học quá mức nếu dữ liệu ít.
-- Dùng dropout, early stopping, và regularization nếu cần.
-- Kiểm tra các câu có phủ định như not bad, hardly good, never works, vì đây là nơi mô hình chuỗi thường cho thấy giá trị rõ nhất.
-
-Nếu bạn muốn hiểu mô hình này thật sâu, hãy so sánh ba mức:
-
-- MLP trên TF-IDF để có baseline phi tuần tự
-- BiLSTM không attention để thấy ảnh hưởng của ngữ cảnh chuỗi
-- BiLSTM có attention để thấy việc tập trung vào từ quan trọng giúp cải thiện thế nào
-
-Đây là hướng rất hợp nếu mục tiêu của bạn là chuyển từ text classification cổ điển sang mô hình deep learning có khả năng tổng quát tốt hơn và dễ mở rộng sang các bài toán như review classification, aspect-based sentiment analysis, hoặc text intent detection.
-
 ## 6. Khi nào nên dùng mô hình nào
 
 Một quy tắc thực tế:
@@ -241,14 +197,12 @@ Một quy tắc thực tế:
 - Muốn học cách chia nhánh và diễn giải quyết định: Decision Tree
 - Muốn hiệu năng tốt trên text cổ điển: SVM tuyến tính
 - Muốn học biểu diễn và backprop: Neural Network
-- Muốn học ngữ cảnh tuần tự và cơ chế chú ý: Attention-based BiLSTM
 
 Nếu mục tiêu là làm Kaggle tốt, thứ tự thử nghiệm hợp lý thường là:
 
 - Naive Bayes
 - Linear SVM
 - Neural Network đơn giản
-- Attention-based BiLSTM
 - Tinh chỉnh feature engineering như n-gram, TF-IDF, stopword handling, normalization
 
 Decision Tree nên được giữ như một bài học và một baseline giải thích, không nên kỳ vọng nó là mô hình tốt nhất cho dữ liệu text chiều cao.
